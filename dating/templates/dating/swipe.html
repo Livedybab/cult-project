@@ -4,48 +4,47 @@
 {% block title %}Культовые знакомства{% endblock %}
 
 {% block content %}
-<div class="swipe-wrapper" style="max-width: 420px; margin: 30px auto; padding: 0 16px; position: relative;">
-    <h2 class="section-title" style="text-align: center; font-size: 2rem; margin-bottom: 4px;">Культовые знакомства</h2>
-    <p style="text-align: center; color: #A6ADBA; margin-bottom: 20px;">Свайпайте вправо ❤️ или влево 👎</p>
+<div class="swipe-wrapper swipe-screen">
+    <h2 class="section-title">Культовые знакомства</h2>
+    <p class="swipe-screen__subtitle">Свайпайте вправо или влево</p>
 
-    <div id="card-stack" style="position: relative; height: 520px; perspective: 800px;">
+    <div id="card-stack">
         {% if profile %}
-            <div class="swipe-card" data-user-id="{{ profile.user.id }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 24px; overflow: hidden; box-shadow: 0 14px 40px rgba(0,0,0,0.6), 0 0 30px rgba(111,45,189,0.15); background: #0D1824; touch-action: none; user-select: none; will-change: transform;">
-                <div style="height: 65%; background: #111D2B; position: relative; overflow: hidden;">
+            <div class="swipe-card" data-user-id="{{ profile.user.id }}">
+                <div class="swipe-card__image-wrap">
                     {% if profile.avatar %}
-                        <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}">
                     {% else %}
-                        <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
-                            <i class="fas fa-user" style="font-size: 5rem; color: #A855F7;"></i>
+                        <div class="swipe-card__placeholder">
+                            <i class="fas fa-user"></i>
                         </div>
                     {% endif %}
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to top, #0D1824 0%, rgba(13,24,36,0) 100%);"></div>
-                    <div style="position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); padding: 6px 16px; border-radius: 40px; border: 1px solid rgba(168,85,247,0.4); box-shadow: 0 0 20px rgba(147,51,234,0.25);">
-                        <span style="color: #D8B4FE; font-weight: 700; font-size: 0.9rem;">{{ compatibility }}% совместимости</span>
+                    <div class="swipe-card__overlay"></div>
+                    <div class="swipe-card__compatibility">
+                        <span>{{ compatibility }}% совместимости</span>
                     </div>
                 </div>
-                <div style="padding: 16px 20px 20px 20px; background: #0D1824;">
-                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: #F7F7FB; margin-bottom: 2px;">{{ profile.user.username }}, {{ profile.age|default:"?" }}</h3>
-                    <div style="color: #A6ADBA; font-size: 0.95rem; margin-bottom: 6px;">
-                        <i class="fas fa-map-pin" style="color: #A855F7; margin-right: 6px;"></i> {{ profile.city|default:"Город не указан" }}
+                <div class="swipe-card__body">
+                    <h3 class="swipe-card__name">{{ profile.user.username }}, {{ profile.age|default:"?" }}</h3>
+                    <div class="swipe-card__meta">
+                        <i class="fas fa-map-pin"></i> {{ profile.city|default:"Город не указан" }}
                     </div>
-                    <div style="color: #D8B4FE; font-size: 0.95rem; margin-bottom: 12px;">{{ profile.bio|truncatechars:100 }}</div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                        {% for interest in profile.interests.split|slice:":4" %}
+                    <div class="swipe-card__bio">{{ profile.bio|truncatechars:100 }}</div>
+                    <div class="swipe-card__tags">
+                        {% for interest in profile.interests.all|slice:":4" %}
                             <span class="interest-tag-premium">{{ interest }}</span>
                         {% endfor %}
                     </div>
                 </div>
             </div>
         {% else %}
-            <div style="text-align: center; padding: 60px 20px; background: #0D1824; border-radius: 24px; box-shadow: 0 14px 40px rgba(0,0,0,0.5);">
-                <p style="color: #A6ADBA;">Нет новых анкет. Загляните позже!</p>
+            <div class="swipe-card" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:60px 20px;background:#0D1824;">
+                <p style="color:#A6ADBA;">Нет новых анкет. Загляните позже!</p>
             </div>
         {% endif %}
     </div>
 
-    <!-- КНОПКИ -->
-    <div style="display: flex; justify-content: center; gap: 40px; margin-top: 24px;">
+    <div class="swipe-actions">
         <button id="dislike-btn" class="swipe-btn swipe-btn-dislike">
             <i class="fas fa-times"></i>
         </button>

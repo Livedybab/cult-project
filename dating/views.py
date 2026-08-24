@@ -160,6 +160,20 @@ class FeedView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         user = self.request.user
         profiles = Profile.objects.exclude(user=user).filter(is_onboarded=True)
+
+        if not profiles.exists():
+            demo_username = 'cult_demo_match'
+            demo_user, _ = User.objects.get_or_create(username=demo_username)
+            demo_profile, _ = Profile.objects.get_or_create(
+                user=demo_user,
+                defaults={
+                    'bio': 'Новых рекомендаций пока нет. Новые знакомства появятся как только соберётся больше участников.',
+                    'city': 'Зеленоград',
+                    'is_onboarded': True,
+                }
+            )
+            return [(demo_profile, 0)]
+
         compat_list = []
         for p in profiles:
             score = calculate_compatibility(user.profile, p)
@@ -170,6 +184,7 @@ class FeedView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
+        context['is_landing'] = not self.request.user.is_authenticated
         today = timezone.now().date()
         daily_pick = DailyPick.objects.filter(user=user, date=today).first()
         if not daily_pick:
