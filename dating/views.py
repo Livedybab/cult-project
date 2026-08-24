@@ -185,6 +185,7 @@ class FeedView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         context['is_landing'] = not self.request.user.is_authenticated
+        context['bottom_nav_inline'] = self.request.user.is_authenticated
         today = timezone.now().date()
         daily_pick = DailyPick.objects.filter(user=user, date=today).first()
         if not daily_pick:

@@ -133,7 +133,6 @@
     }
 
     .dating-create-btn:hover {
-        transform: translateY(-2px);
         box-shadow: 0 10px 30px rgba(147, 51, 234, 0.5), 0 0 18px rgba(217, 70, 239, 0.28);
     }
 
@@ -186,7 +185,8 @@
         width: 380px;
         height: 460px;
         object-fit: cover;
-        object-position: center 40%;
+        object-position: center 30%;
+        border-radius: 0 0 45% 45% / 0 0 20% 20%;
         z-index: 2;
         display: block;
         filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.4));
@@ -349,6 +349,16 @@
         -webkit-backdrop-filter: blur(16px);
     }
 
+    .bottom-nav--inline {
+        position: static;
+        left: auto;
+        bottom: auto;
+        transform: none;
+        margin: 28px auto 0;
+        width: max-content;
+        max-width: calc(100% - 32px);
+    }
+
     .bottom-nav a {
         min-width: 64px;
         padding: 9px 10px;
@@ -475,6 +485,16 @@
             transform: none;
             justify-content: space-between;
             overflow-x: auto;
+        }
+
+        .bottom-nav--inline {
+            left: auto;
+            right: auto;
+            transform: none;
+            justify-content: center;
+            overflow-x: visible;
+            width: max-content;
+            margin: 24px auto 0;
         }
 
         .bottom-nav a {

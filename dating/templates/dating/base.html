@@ -34,7 +34,7 @@
 
 {% if user.is_authenticated and not is_landing %}
 
-    <nav class="bottom-nav">
+    <nav class="bottom-nav {% if bottom_nav_inline %}bottom-nav--inline{% endif %}">
 
         <a
             href="{% url 'dating:feed' %}"
