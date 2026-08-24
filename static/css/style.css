@@ -1095,6 +1095,9 @@ img {
     transform: rotate(12deg);
 }
 
+/* TODO(BUG): на узких экранах контент карточки (био + теги интересов) может
+   не помещаться в фиксированные 40% высоты — нижние пиксели обрезаются.
+   Нужно пересмотреть высоту body / добавить overflow или min-height. */
 .swipe-card__body {
     padding: 18px 22px 22px;
     background: var(--card-primary);

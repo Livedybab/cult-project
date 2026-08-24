@@ -8,7 +8,7 @@
     .dating-landing {
         max-width: 1280px;
         margin: 0 auto;
-        padding: 24px 28px 72px;
+        padding: 24px 28px 60px;
         color: #f5f3ff;
     }
 
@@ -354,7 +354,7 @@
         left: auto;
         bottom: auto;
         transform: none;
-        margin: 28px auto 0;
+        margin: 16px auto 0;
         width: max-content;
         max-width: calc(100% - 32px);
     }
@@ -417,66 +417,106 @@
         }
     }
 
-    @media (max-width: 720px) {
-        .dating-landing {
-            padding-left: 16px;
-            padding-right: 16px;
-        }
-
+    /* Хедер: на планшетах/телефонах — в колонку по центру */
+    @media (max-width: 860px) {
         .dating-landing__header {
-            flex-wrap: wrap;
-            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            text-align: center;
         }
 
         .dating-nav {
-            order: 3;
             width: 100%;
             justify-content: center;
             flex-wrap: wrap;
             gap: 16px;
         }
 
-        .dating-steps__row {
-            grid-template-columns: repeat(2, minmax(120px, 1fr));
+        .dating-header__action {
+            align-self: center;
+        }
+    }
+
+    @media (max-width: 720px) {
+        .dating-landing {
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-bottom: 48px;
         }
 
+        /* Шаги — вертикальный таймлайн с вертикальными соединителями */
+        .dating-steps__row {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+
+        .dating-step {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-align: left;
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        .dating-step__icon {
+            margin: 0;
+            flex: 0 0 54px;
+        }
+
+        .dating-step span {
+            text-align: left;
+        }
+
+        /* На телефонах линии между шагами скрываем — только вертикальный список */
         .dating-step::after {
             display: none;
         }
 
+        /* Визуал: уменьшаем и держим плашки внутри экрана */
         .dating-visual {
-            min-height: 480px;
+            min-height: 470px;
         }
 
         .dating-photo {
-            width: 300px;
-            height: 360px;
-        }
-
-        .dating-visual__ring {
-            width: 320px;
+            width: 250px;
             height: 320px;
         }
 
+        .dating-visual__ring {
+            width: 290px;
+            height: 290px;
+        }
+
         .dating-card--top-left {
-            transform: translate(-50%, -50%) translate(-170px, -80px);
+            transform: translate(-50%, -50%) translate(-76px, -95px);
         }
 
         .dating-card--top-right {
-            transform: translate(-50%, -50%) translate(170px, -80px);
+            transform: translate(-50%, -50%) translate(76px, -95px);
         }
 
         .dating-card--bottom-left {
-            transform: translate(-50%, -50%) translate(-160px, 130px);
+            transform: translate(-50%, -50%) translate(-74px, 118px);
+        }
+
+        .dating-card--bottom-right {
+            transform: translate(-50%, -50%) translate(74px, 118px);
         }
 
         .dating-card {
-            min-width: 120px;
-            padding: 10px 12px;
+            min-width: 104px;
+            padding: 8px 10px;
         }
 
         .dating-card__value {
-            font-size: 1.5rem;
+            font-size: 1.35rem;
         }
 
         .bottom-nav {
@@ -494,7 +534,7 @@
             justify-content: center;
             overflow-x: visible;
             width: max-content;
-            margin: 24px auto 0;
+            margin: 14px auto 0;
         }
 
         .bottom-nav a {
