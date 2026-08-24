@@ -518,7 +518,11 @@
             <a href="#steps">Для бизнеса</a>
         </nav>
 
-        <a class="dating-header__action" href="{% url 'dating:login' %}">Войти</a>
+        {% if user.is_authenticated %}
+            <a class="dating-header__action" href="{% url 'dating:profile_detail' user.profile.pk %}">Профиль</a>
+        {% else %}
+            <a class="dating-header__action" href="{% url 'dating:login' %}">Войти</a>
+        {% endif %}
     </header>
 
     <main class="dating-hero">
@@ -527,10 +531,14 @@
             <p>
                 Культовая связь — это интеллектуальная платформа для знакомств и общения. Наш ИИ помогает найти человека, с которым у вас общие ценности, интересы и цели в жизни.
             </p>
-            {% if user.profile.is_onboarded %}
-                <a class="dating-create-btn" href="{% url 'dating:profile_edit' %}">Редактировать профиль</a>
+            {% if user.is_authenticated %}
+                {% if user.profile.is_onboarded %}
+                    <a class="dating-create-btn" href="{% url 'dating:profile_edit' %}">Редактировать профиль</a>
+                {% else %}
+                    <a class="dating-create-btn" href="{% url 'dating:onboarding_start' %}">Создать профиль</a>
+                {% endif %}
             {% else %}
-                <a class="dating-create-btn" href="{% url 'dating:onboarding_start' %}">Создать профиль</a>
+                <a class="dating-create-btn" href="{% url 'dating:register' %}">Создать профиль</a>
             {% endif %}
         </section>
 
@@ -559,7 +567,7 @@
     <section class="dating-steps" id="steps">
         <h2>Как это работает</h2>
         <div class="dating-steps__row">
-            <a class="dating-step-link dating-step-link--primary" href="{% if user.profile.is_onboarded %}{% url 'dating:profile_edit' %}{% else %}{% url 'dating:onboarding_start' %}{% endif %}">
+            <a class="dating-step-link dating-step-link--primary" href="{% if user.is_authenticated %}{% if user.profile.is_onboarded %}{% url 'dating:profile_edit' %}{% else %}{% url 'dating:onboarding_start' %}{% endif %}{% else %}{% url 'dating:register' %}{% endif %}">
                 <div class="dating-step">
                     <div class="dating-step__icon"><i class="fa-solid fa-user-plus"></i></div>
                     <span>Создайте профиль</span>

@@ -143,22 +143,23 @@ def onboarding(request, step=1):
 
 
 # ===== FEED (ГЛАВНАЯ ЛЕНТА) =====
-class FeedView(LoginRequiredMixin, ListView):
+class FeedView(ListView):
     model = Profile
     template_name = 'dating/feed.html'
     context_object_name = 'feed_items'
-    login_url = 'dating:login'
 
     def dispatch(self, request, *args, **kwargs):
         response = super().dispatch(request, *args, **kwargs)
         if response.status_code == 302:
             return response
-        if not request.user.profile.is_onboarded:
+        if request.user.is_authenticated and not request.user.profile.is_onboarded:
             return redirect('dating:onboarding_start')
         return response
 
     def get_queryset(self):
         user = self.request.user
+        if not user.is_authenticated:
+            return []
         profiles = Profile.objects.exclude(user=user).filter(is_onboarded=True)
 
         if not profiles.exists():
@@ -184,15 +185,16 @@ class FeedView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        context['is_landing'] = not self.request.user.is_authenticated
-        context['bottom_nav_inline'] = self.request.user.is_authenticated
-        today = timezone.now().date()
-        daily_pick = DailyPick.objects.filter(user=user, date=today).first()
-        if not daily_pick:
-            profiles = Profile.objects.exclude(user=user).filter(is_onboarded=True).order_by('?')[:5]
-            daily_pick = DailyPick.objects.create(user=user)
-            daily_pick.recommended_users.set([p.user for p in profiles])
-        context['daily_pick'] = daily_pick
+        context['is_landing'] = not user.is_authenticated
+        context['bottom_nav_inline'] = user.is_authenticated
+        if user.is_authenticated:
+            today = timezone.now().date()
+            daily_pick = DailyPick.objects.filter(user=user, date=today).first()
+            if not daily_pick:
+                profiles = Profile.objects.exclude(user=user).filter(is_onboarded=True).order_by('?')[:5]
+                daily_pick = DailyPick.objects.create(user=user)
+                daily_pick.recommended_users.set([p.user for p in profiles])
+            context['daily_pick'] = daily_pick
         context['groups'] = Group.objects.all()[:5]
         return context
 
