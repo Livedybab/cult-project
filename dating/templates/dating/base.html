@@ -1,0 +1,92 @@
+{% load static %}
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    {% block title %}Культовая связь{% endblock %}
+</title>
+
+<!-- Шрифт Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
+
+<!-- Font Awesome -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+>
+
+<!-- Наш CSS -->
+<link
+    rel="stylesheet"
+    href="{% static 'css/style.css' %}"
+>
+{% block content %}
+{% endblock %}
+
+
+{% if user.is_authenticated and not is_landing %}
+
+    <nav class="bottom-nav">
+
+        <a
+            href="{% url 'dating:feed' %}"
+            class="{% if request.resolver_match.url_name == 'feed' %}active{% endif %}"
+        >
+            <i class="fa-solid fa-house"></i>
+            <span>Лента</span>
+        </a>
+
+        <a
+            href="{% url 'dating:swipe' %}"
+            class="{% if request.resolver_match.url_name == 'swipe' %}active{% endif %}"
+        >
+            <i class="fa-solid fa-fire"></i>
+            <span>Свайп</span>
+        </a>
+
+        <a
+            href="{% url 'dating:groups' %}"
+            class="{% if request.resolver_match.url_name == 'groups' %}active{% endif %}"
+        >
+            <i class="fa-solid fa-users"></i>
+            <span>Группы</span>
+        </a>
+
+        <a
+            href="{% url 'dating:chat_list' %}"
+            class="{% if 'chat' in request.resolver_match.url_name %}active{% endif %}"
+        >
+            <i class="fa-solid fa-comment-dots"></i>
+            <span>Чаты</span>
+        </a>
+
+        <a
+            href="{% url 'dating:profile_detail' user.profile.pk %}"
+            class="{% if request.resolver_match.url_name == 'profile_detail' %}active{% endif %}"
+        >
+            <i class="fa-solid fa-user"></i>
+            <span>Профиль</span>
+        </a>
+
+        <a
+            href="{% url 'dating:logout' %}"
+            class="logout"
+        >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Выйти</span>
+        </a>
+
+    </nav>
+
+{% endif %}
+
+
+<script src="{% static 'js/main.js' %}"></script>

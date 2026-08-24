@@ -1,0 +1,110 @@
+{% extends 'dating/base.html' %}
+{% load static %}
+
+{% block title %}{{ profile.user.username }} — КУЛЬТ{% endblock %}
+
+{% block content %}
+<div style="max-width: 700px; margin: 30px auto; padding: 0 20px;">
+    <div style="background: #0D1824; border-radius: 24px; padding: 30px; box-shadow: 0 14px 40px rgba(0,0,0,0.6), 0 0 30px rgba(111,45,189,0.1);">
+        <!-- Аватар + имя -->
+        <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 16px;">
+            <div style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 2px solid #A855F7; background: #111D2B; flex-shrink: 0;">
+                {% if profile.avatar %}
+                    <img src="{{ profile.avatar.url }}" style="width:100%;height:100%;object-fit:cover;">
+                {% else %}
+                    <div style="display:flex;align-items:center;justify-content:center;height:100%;">
+                        <i class="fas fa-user" style="font-size:2.5rem;color:#A855F7;"></i>
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                <h1 style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;color:#F7F7FB;margin-bottom:2px;">{{ profile.user.username }}, {{ profile.age|default:"?" }}</h1>
+                <div style="color:#A6ADBA;font-size:1rem;">
+                    <i class="fas fa-map-pin" style="color:#A855F7;margin-right:6px;"></i> {{ profile.city|default:"Город не указан" }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Онлайн-статус -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <span style="display:inline-block;width:10px;height:10px;background:#3EE98A;border-radius:50%;box-shadow:0 0 8px rgba(62,233,138,0.5);"></span>
+            <span style="color:#3EE98A;font-weight:500;font-size:0.9rem;">Онлайн</span>
+        </div>
+
+        <!-- Интересы, ценности, черты характера -->
+        {% if profile.interests.all %}
+            <div style="margin:12px 0;">
+                <h4 style="color:#A855F7;font-weight:600;font-size:1rem;margin-bottom:6px;">Интересы</h4>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                    {% for interest in profile.interests.all %}
+                        <span style="background:rgba(168,85,247,0.12);color:#E9D5FF;padding:4px 14px;border-radius:30px;font-size:0.85rem;border:1px solid rgba(168,85,247,0.15);">{{ interest.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if profile.values.all %}
+            <div style="margin:12px 0;">
+                <h4 style="color:#A855F7;font-weight:600;font-size:1rem;margin-bottom:6px;">Ценности</h4>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                    {% for value in profile.values.all %}
+                        <span style="background:rgba(168,85,247,0.12);color:#E9D5FF;padding:4px 14px;border-radius:30px;font-size:0.85rem;border:1px solid rgba(168,85,247,0.15);">{{ value.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if profile.character_traits.all %}
+            <div style="margin:12px 0;">
+                <h4 style="color:#A855F7;font-weight:600;font-size:1rem;margin-bottom:6px;">Черты характера</h4>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                    {% for trait in profile.character_traits.all %}
+                        <span style="background:rgba(168,85,247,0.12);color:#E9D5FF;padding:4px 14px;border-radius:30px;font-size:0.85rem;border:1px solid rgba(168,85,247,0.15);">{{ trait.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- О себе -->
+        {% if profile.bio %}
+            <div style="margin:16px 0;">
+                <h3 style="color:#A855F7;font-weight:600;font-size:1.1rem;margin-bottom:8px;">О себе</h3>
+                <p style="color:#F7F7FB;background:#111D2B;padding:16px;border-radius:16px;line-height:1.6;">{{ profile.bio }}</p>
+            </div>
+        {% endif %}
+
+        <!-- Совместимость (если это не свой профиль) -->
+        {% if request.user != profile.user %}
+            <div style="margin:16px 0;background:rgba(168,85,247,0.08);border-radius:16px;padding:16px;border:1px solid rgba(168,85,247,0.2);">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="color:#F7F7FB;font-weight:600;">Совместимость</span>
+                    <span style="color:#D8B4FE;font-size:1.8rem;font-weight:700;">{{ compatibility_score }}%</span>
+                </div>
+                <p style="color:#A6ADBA;font-size:0.95rem;margin-top:8px;">{{ compatibility_explanation|default:"У вас хорошие шансы!" }}</p>
+            </div>
+        {% endif %}
+
+        <!-- Фотоальбом -->
+        {% if profile.photos.all %}
+            <div style="margin:20px 0;">
+                <h3 style="color:#A855F7;font-weight:600;font-size:1.1rem;margin-bottom:12px;">Фото</h3>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:12px;">
+                    {% for photo in profile.photos.all %}
+                        <img src="{{ photo.image.url }}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:16px;border:1px solid rgba(255,255,255,0.06);">
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Кнопки действий -->
+        <div style="display:flex;justify-content:center;gap:16px;margin-top:24px;">
+            {% if request.user == profile.user %}
+                <a href="{% url 'dating:profile_edit' %}" class="btn btn--primary" style="padding:12px 32px;">Редактировать профиль</a>
+            {% else %}
+                <button class="btn btn--primary" style="padding:12px 32px;" onclick="alert('Лайк отправлен!')">❤️ Лайк</button>
+                <a href="{% url 'dating:chat_list' %}" class="btn btn--outline" style="padding:12px 32px;">💬 Сообщение</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

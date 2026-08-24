@@ -1,0 +1,50 @@
+{% extends 'dating/base.html' %}
+{% load static %}
+
+{% block title %}Чаты — КУЛЬТ{% endblock %}
+
+{% block content %}
+<div style="max-width: 700px; margin: 30px auto; padding: 0 20px;">
+    <h2 class="section-title" style="font-size: 2rem; margin-bottom: 24px;">Чаты</h2>
+    {% if chats %}
+        <ul style="list-style: none; padding: 0;">
+            {% for chat in chats %}
+                {% for participant in chat.participants.all %}
+                    {% if participant != user %}
+                        <li style="background: #0D1824; border-radius: 16px; margin-bottom: 12px; padding: 16px 20px; box-shadow: 0 14px 40px rgba(0,0,0,0.32); transition: transform 0.2s;">
+                            <a href="{% url 'dating:chat_detail' chat.id %}" style="display: flex; align-items: center; gap: 16px; text-decoration: none; color: inherit;">
+                                <div style="width: 56px; height: 56px; border-radius: 50%; overflow: hidden; background: #111D2B; border: 2px solid rgba(168,85,247,0.2); flex-shrink: 0;">
+                                    {% if participant.profile.avatar %}
+                                        <img src="{{ participant.profile.avatar.url }}" alt="{{ participant.username }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    {% else %}
+                                        <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                                            <i class="fas fa-user" style="color: #A855F7; font-size: 1.5rem;"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                        <strong style="color: #F7F7FB; font-size: 1.1rem;">{{ participant.username }}</strong>
+                                        <span style="color: #687280; font-size: 0.75rem;">{{ chat.updated_at|timesince }} назад</span>
+                                    </div>
+                                    <div style="color: #A6ADBA; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        {% with last_msg=chat.last_message %}
+                                            {% if last_msg %}
+                                                {{ last_msg.text|truncatechars:50 }}
+                                            {% else %}
+                                                Чат пуст
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="color: #A6ADBA; text-align: center;">У вас пока нет чатов. Начните общение!</p>
+    {% endif %}
+</div>
+{% endblock %}

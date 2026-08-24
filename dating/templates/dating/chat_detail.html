@@ -1,0 +1,87 @@
+{% extends 'dating/base.html' %}
+{% load static %}
+
+{% block title %}Чат — КУЛЬТ{% endblock %}
+
+{% block content %}
+<div style="max-width: 700px; margin: 30px auto; padding: 0 20px;">
+    <div style="background: #0D1824; border-radius: 24px; padding: 20px; box-shadow: 0 14px 40px rgba(0,0,0,0.52), 0 0 30px rgba(111,45,189,0.1);">
+        <!-- Заголовок -->
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+            <a href="{% url 'dating:chat_list' %}" style="color: #A855F7; font-size: 1.5rem; text-decoration: none;">←</a>
+            <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: #F7F7FB; margin: 0;">
+                {% for p in chat.participants.all %}
+                    {% if p != user %}{{ p.username }}{% endif %}
+                {% endfor %}
+            </h2>
+        </div>
+
+        <!-- Сообщения -->
+        <div id="messages" style="height: 400px; overflow-y: auto; background: #101B28; border-radius: 16px; padding: 16px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px;">
+            {% for msg in messages %}
+                <div class="{% if msg.sender == user %}chat-message-own{% else %}chat-message-other{% endif %}">
+                    {{ msg.text }}
+                    <span class="chat-message-time">{{ msg.created_at|time:"H:i" }}</span>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Форма отправки -->
+        <form id="message-form" method="post" style="display: flex; gap: 12px;">
+            {% csrf_token %}
+            <input type="text" name="text" placeholder="Введите сообщение..." class="chat-input" id="chat-input">
+            <button type="submit" class="btn btn--primary">Отправить</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messagesDiv = document.getElementById('messages');
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+
+    function loadMessages() {
+        fetch(window.location.href)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newMessages = doc.getElementById('messages');
+                const currentMessages = document.getElementById('messages');
+                if (newMessages && currentMessages) {
+                    if (currentMessages.innerHTML !== newMessages.innerHTML) {
+                        currentMessages.innerHTML = newMessages.innerHTML;
+                        currentMessages.scrollTop = currentMessages.scrollHeight;
+                    }
+                }
+            })
+            .catch(e => console.error('Ошибка обновления сообщений:', e));
+    }
+    setInterval(loadMessages, 3000);
+
+    document.getElementById('message-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const form = this;
+        const input = document.getElementById('chat-input');
+        const text = input.value.trim();
+        if (!text) return;
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: new FormData(form)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                input.value = '';
+                loadMessages();
+            }
+        })
+        .catch(e => console.error('Ошибка отправки:', e));
+    });
+</script>
+{% endblock %}

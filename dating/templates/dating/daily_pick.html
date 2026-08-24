@@ -1,0 +1,31 @@
+{% extends 'dating/base.html' %}
+{% load static %}
+
+{% block title %}Ежедневная подборка — КУЛЬТ{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 30px auto; padding: 0 16px;">
+    <h2 class="section-title" style="font-size: 2rem; margin-bottom: 24px;">Ежедневная подборка</h2>
+    <p style="color: #A6ADBA; margin-bottom: 20px;">3 часа на каждый день — знакомьтесь с теми, кто подходит вам идеально</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+        {% for profile in recommended_profiles %}
+            <div style="background: #0D1824; border-radius: 20px; padding: 16px; text-align: center; box-shadow: 0 14px 40px rgba(0,0,0,0.5);">
+                <div style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; margin: 0 auto 12px; border: 2px solid #A855F7; background: #111D2B;">
+                    {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}" style="width:100%;height:100%;object-fit:cover;">
+                    {% else %}
+                        <div style="display:flex;align-items:center;justify-content:center;height:100%;">
+                            <i class="fas fa-user" style="font-size:2rem;color:#A855F7;"></i>
+                        </div>
+                    {% endif %}
+                </div>
+                <h4 style="color:#F7F7FB;font-size:1.2rem;">{{ profile.user.username }}, {{ profile.age|default:"?" }}</h4>
+                <p style="color:#A6ADBA;font-size:0.9rem;">{{ profile.city|default:"Город не указан" }}</p>
+                <a href="{% url 'dating:profile_detail' profile.pk %}" class="btn btn--outline btn--small" style="margin-top: 8px;">Смотреть профиль</a>
+            </div>
+        {% empty %}
+            <p style="color: #A6ADBA;">Нет рекомендаций на сегодня</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

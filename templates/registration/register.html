@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Регистрация — КУЛЬТ{% endblock %}
+
+{% block content %}
+<div class="auth-container" style="max-width: 400px; margin: 60px auto; padding: 30px; background: #202126; border-radius: 20px;">
+    <h2 class="auth-title" style="text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 2rem; margin-bottom: 24px;">Создать аккаунт</h2>
+    <form method="post" style="display: flex; flex-direction: column; gap: 16px;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn--primary" style="width: 100%; padding: 14px;">Зарегистрироваться</button>
+    </form>
+    <p style="text-align: center; margin-top: 16px; color: #A8A1A1;">
+        Уже есть аккаунт? <a href="{% url 'login' %}" style="color: #8D78A8;">Войти</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}КУЛЬТ{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+    <nav class="navbar" role="navigation" aria-label="Главная навигация">
+        <div class="container navbar__inner">
+            <a href="/" class="navbar__logo">
+                <img src="{% static 'images/logo.png' %}" alt="КУЛЬТ" class="navbar__logo-img">
+            </a>
+            <ul class="navbar__links">
+                <li><a href="/#about" class="navbar__link">О нас</a></li>
+                <li><a href="https://kylt-barbershop.ru" class="navbar__link" target="_blank">Барбершоп</a></li>
+                <li><a href="{% url 'dating:feed' %}" class="navbar__link" target="_blank">Культовые знакомства</a></li>
+                <li><a href="/#media" class="navbar__link">Медиа</a></li>
+                <li><a href="/#events" class="navbar__link">События</a></li>
+                <li><a href="/#partners" class="navbar__link">Партнёры</a></li>
+            </ul>
+            <div class="navbar__actions">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dating:profile_detail' user.profile.pk %}" class="btn btn--accent btn--small">Мой профиль</a>
+                    <a href="{% url 'logout' %}" class="btn btn--outline btn--small">Выйти</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn--accent btn--small">Войти</a>
+                    <a href="{% url 'register' %}" class="btn btn--outline btn--small">Регистрация</a>
+                {% endif %}
+                <button class="navbar__burger" id="burgerBtn" aria-label="Открыть меню">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+        <div class="navbar__mobile" id="mobileMenu">
+            <ul class="navbar__mobile-links">
+                <li><a href="/#about" class="navbar__link">О нас</a></li>
+                <li><a href="https://kylt-barbershop.ru" class="navbar__link" target="_blank">Барбершоп</a></li>
+                <li><a href="{% url 'dating:feed' %}" class="navbar__link" target="_blank">Культовые знакомства</a></li>
+                <li><a href="/#media" class="navbar__link">Медиа</a></li>
+                <li><a href="/#events" class="navbar__link">События</a></li>
+                <li><a href="/#partners" class="navbar__link">Партнёры</a></li>
+                <li><hr class="navbar__divider" /></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'dating:profile_detail' user.profile.pk %}" class="navbar__link">Мой профиль</a></li>
+                    <li><a href="{% url 'logout' %}" class="navbar__link navbar__link--highlight">Выйти</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="navbar__link navbar__link--highlight">Войти</a></li>
+                    <li><a href="{% url 'register' %}" class="navbar__link">Регистрация</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <div class="footer__brand">
+                <span class="footer__logo">✦ КУЛЬТ</span>
+                <p class="footer__copy">&copy; 2026 Культ. Все права защищены.</p>
+            </div>
+            <ul class="footer__links">
+                <li><a href="/#about">О НАС</a></li>
+                <li><a href="https://kylt-barbershop.ru" target="_blank">БАРБЕРШОП</a></li>
+                <li><a href="{% url 'dating:feed' %}" target="_blank">КУЛЬТОВЫЕ ЗНАКОМСТВА</a></li>
+                <li><a href="/#media">MEDIA</a></li>
+                <li><a href="/#events">EVENTS</a></li>
+                <li><a href="/#partners">PARTNERS</a></li>
+                <li><a href="/#academy">АКАДЕМИЯ</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

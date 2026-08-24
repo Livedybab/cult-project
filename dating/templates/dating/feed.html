@@ -1,0 +1,227 @@
+{% extends 'dating/base.html' %}
+{% load static %}
+
+{% block title %}Культовая связь{% endblock %}
+
+{% block content %}
+<style>
+    .cult-page {
+        max-width: 1100px;
+        margin: 30px auto;
+        padding: 0 16px 80px;
+    }
+    .cult-hero {
+        display: flex;
+        gap: 40px;
+        background: #0D1824;
+        border-radius: 28px;
+        padding: 30px;
+        box-shadow: 0 14px 40px rgba(0,0,0,0.6);
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .cult-hero__image {
+        flex: 0 0 40%;
+        min-width: 220px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .cult-hero__image img {
+        width: 100%;
+        display: block;
+        height: auto;
+        max-height: 280px;
+        object-fit: cover;
+    }
+    .cult-hero__content {
+        flex: 1;
+        min-width: 260px;
+    }
+    .cult-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #F7F7FB;
+        margin-bottom: 4px;
+        line-height: 1.1;
+    }
+    .cult-subtitle {
+        color: #D8B4FE;
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+    .cult-description {
+        color: #A6ADBA;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 16px;
+        max-width: 480px;
+    }
+    .cult-stats {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 12px;
+    }
+    .cult-stat {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        font-size: 1rem;
+        color: #F7F7FB;
+    }
+    .cult-stat__label {
+        color: #A6ADBA;
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+    .cult-stat__value {
+        font-weight: 700;
+        color: #D8B4FE;
+        font-size: 1.2rem;
+        transition: color 0.2s;
+    }
+    .cult-stat:hover .cult-stat__value {
+        color: #A855F7;
+    }
+
+    .cult-how {
+        background: #0D1824;
+        border-radius: 28px;
+        padding: 30px 24px;
+        margin-top: 30px;
+        box-shadow: 0 14px 40px rgba(0,0,0,0.6);
+    }
+    .cult-how h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #F7F7FB;
+        margin-bottom: 18px;
+    }
+    .cult-how__list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .cult-how__list li {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: #F7F7FB;
+        font-size: 1rem;
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .cult-how__list li:last-child {
+        border-bottom: none;
+    }
+    .cult-how__list li i {
+        color: #A855F7;
+        font-size: 1.2rem;
+        width: 26px;
+        text-align: center;
+    }
+
+    .btn--primary {
+        background: linear-gradient(135deg, #6D28D9, #9333EA);
+        color: #F7F7FB;
+        box-shadow: 0 6px 20px rgba(147,51,234,0.4);
+        padding: 10px 28px;
+        border-radius: 40px;
+        font-weight: 600;
+        display: inline-block;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .btn--primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(147,51,234,0.5);
+    }
+
+    @media (max-width: 768px) {
+        .cult-hero {
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+        .cult-hero__image {
+            flex: 0 0 auto;
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+        .cult-hero__content {
+            text-align: center;
+        }
+        .cult-description {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cult-stats {
+            align-items: center;
+        }
+        .cult-title {
+            font-size: 2.2rem;
+        }
+        .cult-how__list li {
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="cult-page">
+
+    <!-- Баннер + текст (две колонки) -->
+    <div class="cult-hero">
+        <div class="cult-hero__image">
+            <img src="{% static 'images/cult-banner.png' %}" alt="Культовая связь">
+        </div>
+        <div class="cult-hero__content">
+            <h1 class="cult-title">КУЛЬТОВАЯ СВЯЗЬ</h1>
+            <p class="cult-subtitle">Люди, которые действительно подходят друг другу</p>
+            <p class="cult-description">
+                Культовая связь — это интеллектуальная платформа для знакомства и общения.<br>
+                Наш ИИ помогает найти человека, с которым у вас общие ценности, интересы и цели в жизни.
+            </p>
+            <a href="{% url 'dating:profile_edit' %}" class="btn btn--primary">Создать профиль</a>
+
+            <!-- Статистика (в столбик, как на референсе) -->
+            <div class="cult-stats">
+                <div class="cult-stat">
+                    <span class="cult-stat__label">Интересы совпадают</span>
+                    <span class="cult-stat__value">89%</span>
+                </div>
+                <div class="cult-stat">
+                    <span class="cult-stat__label">Психотипы совместимы</span>
+                    <span class="cult-stat__value">91%</span>
+                </div>
+                <div class="cult-stat">
+                    <span class="cult-stat__label">Ценности схожи</span>
+                    <span class="cult-stat__value">93%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Как это работает -->
+    <div class="cult-how">
+        <h2>Как это работает</h2>
+        <ul class="cult-how__list">
+            <li><i class="fas fa-user-plus"></i> Создайте профиль</li>
+            <li><i class="fas fa-brain"></i> ИИ изучает вас</li>
+            <li><i class="fas fa-users"></i> Находит совместимых людей</li>
+            <li><i class="fas fa-comment-dots"></i> Помогает начать диалог</li>
+            <li><i class="fas fa-heart"></i> Помогает сохранить отношения</li>
+        </ul>
+    </div>
+
+</div>
+{% endblock %}

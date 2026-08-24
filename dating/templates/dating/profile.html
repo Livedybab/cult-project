@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ profile.user.username }} — КУЛЬТ{% endblock %}
+
+{% block content %}
+<section style="padding: 60px 0;">
+    <div class="container">
+        <div class="profile-detail">
+            <!-- Аватар -->
+            <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+                <div class="avatar-large">
+                    {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}">
+                    {% else %}
+                        <i class="fas fa-user" style="font-size: 4rem; color: #A855F7; display: flex; align-items: center; justify-content: center; height: 100%;"></i>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- Имя -->
+            <h1 style="text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; margin-bottom: 4px;">{{ profile.user.username }}</h1>
+            <p style="text-align: center; color: #A6ADBA; margin-bottom: 16px;">
+                {% if profile.age %}{{ profile.age }} лет {% endif %}
+                {% if profile.gender %}{{ profile.get_gender_display }} {% endif %}
+                {% if profile.city %}{{ profile.city }}{% endif %}
+            </p>
+            <!-- О себе -->
+            {% if profile.bio %}
+                <p style="background: #111D2B; padding: 16px; border-radius: 16px; margin: 16px 0; color: #F7F7FB;">{{ profile.bio }}</p>
+            {% endif %}
+            <!-- Интересы -->
+            {% if profile.interests %}
+                <div style="margin: 16px 0;">
+                    <strong style="color: #A855F7; display: block; margin-bottom: 8px;">Интересы:</strong>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        {% for interest in profile.interests.split %}
+                            <span class="interest-tag">{{ interest }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            <!-- Ценности -->
+            {% if profile.values %}
+                <div style="margin: 16px 0;">
+                    <strong style="color: #A855F7; display: block; margin-bottom: 8px;">Ценности:</strong>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        {% for value in profile.values.split %}
+                            <span class="interest-tag">{{ value }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            <!-- Кнопки (заглушки) -->
+            <div style="display: flex; justify-content: center; gap: 16px; margin-top: 24px;">
+                <button class="btn btn--primary" disabled>❤️ Лайк</button>
+                <button class="btn btn--outline" disabled>💬 Сообщение</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

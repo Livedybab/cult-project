@@ -1,0 +1,25 @@
+{% extends 'dating/base.html' %}
+{% load static %}
+
+{% block title %}Группы — КУЛЬТ{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 30px auto; padding: 0 16px;">
+    <h2 class="section-title" style="font-size: 2rem; margin-bottom: 24px;">Группы по интересам</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
+        {% for group in groups %}
+            <div style="background: #0D1824; border-radius: 20px; padding: 20px; box-shadow: 0 14px 40px rgba(0,0,0,0.5); text-align: center;">
+                <div style="font-size: 3rem; color: #A855F7; margin-bottom: 8px;">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h4 style="color:#F7F7FB;font-size:1.2rem;">{{ group.name }}</h4>
+                <p style="color:#A6ADBA;font-size:0.9rem;">{{ group.members.count }} участников</p>
+                <p style="color:#A6ADBA;font-size:0.85rem;margin-top:4px;">{{ group.description|truncatechars:60 }}</p>
+                <button class="btn btn--outline btn--small" style="margin-top: 8px;">Вступить</button>
+            </div>
+        {% empty %}
+            <p style="color:#A6ADBA;">Нет групп</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

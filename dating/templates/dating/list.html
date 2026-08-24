@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Культовые знакомства{% endblock %}
+
+{% block content %}
+<section class="dating-list" style="padding: 60px 0;">
+    <div class="container">
+        <h1 class="section-title" style="text-align: center;">Культовые знакомства</h1>
+        <p class="dating-subtitle" style="text-align: center; color: #A6ADBA; margin-bottom: 40px; font-size: 1.2rem;">
+            Люди, которые действительно подходят друг другу
+        </p>
+
+        <div class="dating-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px;">
+            {% for profile in profiles %}
+                <div class="dating-card">
+                    <a href="{% url 'dating:detail' profile.pk %}" style="text-decoration: none; color: inherit;">
+                        <div class="profile-card__avatar">
+                            {% if profile.avatar %}
+                                <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}">
+                            {% else %}
+                                <i class="fas fa-user" style="font-size: 4rem; color: #A855F7;"></i>
+                            {% endif %}
+                        </div>
+                        <div class="profile-card__body">
+                            <h3>{{ profile.user.username }}</h3>
+                            <p>
+                                {% if profile.age %}{{ profile.age }} лет {% endif %}
+                                {% if profile.city %}{{ profile.city }}{% endif %}
+                            </p>
+                            {% if profile.interests %}
+                                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+                                    {% for interest in profile.interests.split|slice:":3" %}
+                                        <span class="interest-tag">{{ interest }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+            {% empty %}
+                <p style="text-align: center; color: #A6ADBA; grid-column: 1 / -1; padding: 40px 0;">Пока нет анкет. Будьте первым!</p>
+            {% endfor %}
+        </div>
+
+        {% if is_paginated %}
+            <div style="display: flex; justify-content: center; gap: 12px; margin-top: 40px;">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn--outline btn--small">← Назад</a>
+                {% endif %}
+                <span style="color: #A6ADBA; align-self: center;">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="btn btn--outline btn--small">Вперед →</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

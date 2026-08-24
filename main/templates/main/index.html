@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}КУЛЬТ — Сообщество{% endblock %}
+
+{% block content %}
+    <!-- HERO -->
+    <section class="hero" id="about">
+        <div class="container hero__inner">
+            <div class="hero__content">
+                <h1 class="hero__title">
+                    КУЛЬТ
+                    <span class="hero__subtitle">ЭТО БОЛЬШЕ, ЧЕМ БАРБЕРШОП</span>
+                </h1>
+                <ul class="hero__features">
+                    <li>СТРИЖЕМСЯ</li><li>ОБЩАЕМСЯ</li><li>ЗНАКОМИМСЯ</li>
+                    <li>УЧИМСЯ</li><li>СОЗДАЕМ ПРОЕКТЫ</li><li>ОТДЫХАЕМ</li>
+                    <li>ПОЛУЧАЕМ БОНУСЫ</li>
+                </ul>
+                <div class="hero__actions">
+                    <a href="#join" class="btn btn--primary">ВСТУПИТЬ В СООБЩЕСТВО</a>
+                    <a href="#video" class="hero__video-link">
+                        <span class="hero__video-icon">▶</span> СМОТРЕТЬ ВИДЕО
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- НАПРАВЛЕНИЯ -->
+    <section class="directions" id="barbershop">
+        <div class="container">
+            <h2 class="section-title">НАШИ НАПРАВЛЕНИЯ</h2>
+            <div class="directions__grid">
+                <div class="direction-card" style="background-image: url('{% static 'images/barbershop.jpg' %}');">
+                    <div class="direction-card__overlay">
+                        <span class="direction-card__number">01</span>
+                        <h3 class="direction-card__title">БАРБЕРШОП</h3>
+                        <p class="direction-card__desc">Стрижки, уход и атмосфера для настоящих мужчин.</p>
+                        <a href="https://kylt-barbershop.ru" class="btn btn--outline btn--small" target="_blank">Перейти</a>
+                    </div>
+                </div>
+                <div class="direction-card" style="background-image: url('{% static 'images/dating.jpg' %}');">
+                    <div class="direction-card__overlay">
+                        <span class="direction-card__number">02</span>
+                        <h3 class="direction-card__title">КУЛЬТОВЫЕ ЗНАКОМСТВА</h3>
+                        <p class="direction-card__desc">Знакомства внутри сообщества.</p>
+                        <a href="{% url 'dating:feed' %}" class="btn btn--outline btn--small" target="_blank">Перейти</a>
+                    </div>
+                </div>
+                <div class="direction-card" style="background-image: url('{% static 'images/media.jpg' %}');">
+                    <div class="direction-card__overlay">
+                        <span class="direction-card__number">03</span>
+                        <h3 class="direction-card__title">MEDIA</h3>
+                        <p class="direction-card__desc">Подкасты, интервью, видео и истории людей.</p>
+                        <a href="#subscribe" class="btn btn--outline btn--small">Подписаться на рассылку</a>
+                    </div>
+                </div>
+                <div class="direction-card" style="background-image: url('{% static 'images/events.jpg' %}');">
+                    <div class="direction-card__overlay">
+                        <span class="direction-card__number">04</span>
+                        <h3 class="direction-card__title">EVENTS</h3>
+                        <p class="direction-card__desc">Мероприятия, вечеринки, лекции и даже ...</p>
+                        <a href="#subscribe" class="btn btn--outline btn--small">Подписаться на рассылку</a>
+                    </div>
+                </div>
+                <div class="direction-card" style="background-image: url('{% static 'images/partners.jpg' %}');">
+                    <div class="direction-card__overlay">
+                        <span class="direction-card__number">05</span>
+                        <h3 class="direction-card__title">PARTNERS</h3>
+                        <p class="direction-card__desc">Скидки и бонусы от партнеров для участников.</p>
+                        <a href="#subscribe" class="btn btn--outline btn--small">Подписаться на рассылку</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- СТАТИСТИКА -->
+    <section class="stats">
+        <div class="container stats__grid">
+            <div class="stat-item">
+                <i class="fas fa-scissors stat-icon"></i>
+                <span class="stat-item__number">2</span>
+                <span class="stat-item__label">БАРБЕРШОПА</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-people-group stat-icon"></i>
+                <span class="stat-item__number">3000+</span>
+                <span class="stat-item__label">УЧАСТНИКОВ СООБЩЕСТВА</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-handshake stat-icon"></i>
+                <span class="stat-item__number">40+</span>
+                <span class="stat-item__label">ПАРТНЕРОВ</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-calendar-check stat-icon"></i>
+                <span class="stat-item__number">120+</span>
+                <span class="stat-item__label">МЕРОПРИЯТИЙ</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-headphones stat-icon"></i>
+                <span class="stat-item__number">25+</span>
+                <span class="stat-item__label">ВЫПУСКОВ ПОДКАСТА</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-user-graduate stat-icon"></i>
+                <span class="stat-item__number">100+</span>
+                <span class="stat-item__label">ВЫПУСКНИКОВ АКАДЕМИЙ</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ГОРОДСКОЙ ПРОМО -->
+    <section class="city-promo">
+        <div class="container">
+            <div class="city-promo__card">
+                <h2 class="city-promo__title">КУЛЬТ В ТВОЕМ ГОРОДЕ</h2>
+                <p class="city-promo__subtitle">ВСЕ ЛУЧШЕЕ РЯДОМ С ТОБОЙ</p>
+                <p class="city-promo__text">Мы собрали для тебя лучшие места и люди в Зеленограде. Попользуйся скидками, участвуй в событиях, знакомься и развивайся.</p>
+                <a href="#partners" class="btn btn--primary">СМОТРЕТЬ ПАРТНЕРОВ</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- КАРТА ЛОКАЦИЙ -->
+    <section class="map-section" id="locations">
+        <div class="container">
+            <h2 class="section-title map-section__title">
+                <i class="fas fa-map-pin map-section__icon"></i> НАШИ ЛОКАЦИИ
+            </h2>
+            <p class="map-section__subtitle">Два барбершопа в Зеленограде — всегда рядом с тобой</p>
+            <iframe 
+                src="https://yandex.ru/map-widget/v1/?ll=37.1838%2C55.9816&z=14&pt=37.2167389%2C55.9961475%2Cflag~37.1509442%2C55.9670306%2Cflag&theme=dark"
+                style="width: 100%; height: 400px; border-radius: 16px; border: none; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 0 30px rgba(124,44,88,0.25); display: block;"
+                allowfullscreen>
+            </iframe>
+            <div class="map-section__addresses">
+                <div class="map-address">
+                    <i class="fas fa-location-dot"></i>
+                    <span>Яблоневая аллея, д. 2</span>
+                </div>
+                <div class="map-address">
+                    <i class="fas fa-location-dot"></i>
+                    <span>Георгиевский проспект, д. 37к2</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ПРОФИЛЬ + БОНУСЫ + МЕДИА + ЛЕНТА -->
+    <section class="profile-section" id="profile">
+        <div class="container profile-section__inner">
+            <div class="profile-card">
+                <div class="profile-card__header">
+                    <div class="profile-card__avatar">А</div>
+                    <div class="profile-card__info">
+                        <span class="profile-card__name">Александр</span>
+                        <span class="profile-card__badge">Участник</span>
+                        <span class="profile-card__level">Уровень 3</span>
+                    </div>
+                </div>
+                <div class="profile-card__bonus">
+                    <span class="profile-card__bonus-number">1240</span>
+                    <span class="profile-card__bonus-label">БОНУСОВ</span>
+                </div>
+                <ul class="profile-card__menu">
+                    <li><a href="#">Запись в барбершоп</a></li>
+                    <li><a href="{% url 'dating:feed' %}" target="_blank">Культовые знакомства</a></li>
+                    <li><a href="#">Мероприятия</a></li>
+                    <li><a href="#">Партнерские бонусы</a></li>
+                    <li><a href="#">Медиа</a></li>
+                    <li><a href="#">Академия</a></li>
+                </ul>
+            </div>
+
+            <div class="profile-side">
+                <div class="bonus-box">
+                    <div class="bonus-box__header">
+                        <span class="bonus-box__title">ТВОЙ БОНУСЫ</span>
+                        <span class="bonus-box__amount">1240</span>
+                        <span class="bonus-box__label">Баллов</span>
+                    </div>
+                    <div class="bonus-box__active">
+                        <span class="bonus-box__active-title">АКТИВНЫЕ БОНУСЫ</span>
+                        <a href="#" class="bonus-box__view-all">Смотреть все &gt;</a>
+                    </div>
+                    <div class="bonus-item">
+                        <span class="bonus-item__name">COFFEE CULT</span>
+                        <span class="bonus-item__discount">-20% на все напитки</span>
+                        <span class="bonus-item__expiry">Действует до 25.05.2024</span>
+                    </div>
+                </div>
+
+                <div class="media-box">
+                    <img src="{% static 'images/media.jpg' %}" alt="Обложка подкаста" class="media-box__img">
+                    <span class="media-box__tag">МЕДИА</span>
+                    <h3 class="media-box__title">НОВЫЙ ВЫПУСК ПОДКАСТА</h3>
+                    <p class="media-box__guest">Артем Багров</p>
+                    <p class="media-box__desc">Предприниматель, основатель бренда</p>
+                    <a href="#" class="btn btn--outline btn--small">Слушать выпуск</a>
+                </div>
+
+                <div class="feed-box">
+                    <div class="feed-box__header">
+                        <span class="feed-box__title">ЛЕНТА</span>
+                        <a href="#" class="feed-box__view-all">Смотреть все &gt;</a>
+                    </div>
+                    <div class="feed-item">
+                        <span class="feed-item__badge">ФОТО</span>
+                        <span class="feed-item__time">2 ч назад</span>
+                        <p class="feed-item__text">Как прошла вечеринка в эти выходные</p>
+                    </div>
+                    <div class="feed-item">
+                        <span class="feed-item__badge">МЕРОПРИЯТИЕ</span>
+                        <span class="feed-item__time">5 ч назад</span>
+                        <p class="feed-item__text">Турнир по покеру уже в эту пятницу!</p>
+                    </div>
+                    <a href="#subscribe" class="btn btn--outline btn--small feed-box__subscribe">Подписаться на рассылку</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="join">
+        <div class="container cta__inner">
+            <div class="cta__content">
+                <h2 class="cta__title">ВСТУПАЙ В СООБЩЕСТВО</h2>
+                <p class="cta__text">Культ – это люди, атмосфера и возможности, которые делают жизнь ярче.</p>
+                <div class="cta__actions">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dating:feed' %}" class="btn btn--primary" target="_blank">ПОСМОТРЕТЬ АНКЕТЫ</a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn btn--primary">СТАТЬ УЧАСТНИКОМ</a>
+                        <a href="{% url 'login' %}" class="btn btn--outline">УЖЕ С НАМИ? ВОЙТИ</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
