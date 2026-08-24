@@ -936,6 +936,39 @@ img {
     position: relative;
 }
 
+/* Телефонный контейнер (устройство) */
+.swipe-phone {
+    position: relative;
+    margin: 0 auto;
+    padding: 12px 12px 16px;
+    border-radius: 46px;
+    background: linear-gradient(160deg, #23232e 0%, #0c0f16 100%);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 32px 70px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.swipe-phone__notch {
+    width: 130px;
+    height: 22px;
+    margin: 0 auto 10px;
+    background: #05070b;
+    border-radius: 0 0 16px 16px;
+    position: relative;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.swipe-phone__notch::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 42px;
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
 .swipe-screen .section-title {
     text-align: center;
     font-size: 2.15rem;
@@ -950,7 +983,7 @@ img {
 
 #card-stack {
     position: relative;
-    height: 520px;
+    height: 560px;
     perspective: 800px;
 }
 
@@ -959,18 +992,28 @@ img {
     inset: 0 auto auto 0;
     width: 100%;
     height: 100%;
-    border-radius: 24px;
+    border-radius: 30px;
     overflow: hidden;
     background: var(--card-primary);
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(111, 45, 189, 0.15);
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.6), 0 0 36px rgba(111, 45, 189, 0.18);
     touch-action: none;
     user-select: none;
     will-change: transform;
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: grab;
+    transition: box-shadow 0.3s ease;
+}
+
+.swipe-card:hover {
+    box-shadow: 0 20px 52px rgba(0, 0, 0, 0.66), 0 0 44px rgba(111, 45, 189, 0.28);
+}
+
+.swipe-card.is-dragging {
+    cursor: grabbing;
 }
 
 .swipe-card__image-wrap {
-    height: 65%;
+    height: 60%;
     background: var(--card-secondary);
     position: relative;
     overflow: hidden;
@@ -1004,8 +1047,8 @@ img {
 
 .swipe-card__compatibility {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    bottom: 16px;
+    left: 16px;
     background: rgba(0, 0, 0, 0.68);
     backdrop-filter: blur(8px);
     padding: 7px 16px;
@@ -1020,9 +1063,44 @@ img {
     font-size: 0.9rem;
 }
 
+/* Бейджи LIKE / NOPE при перетаскивании */
+.swipe-card__badge {
+    position: absolute;
+    top: 24px;
+    z-index: 5;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 800;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    padding: 6px 18px;
+    border-radius: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.08s linear;
+}
+
+.swipe-card__badge--like {
+    left: 22px;
+    color: #4ade80;
+    border: 3px solid #4ade80;
+    text-shadow: 0 0 14px rgba(74, 222, 128, 0.5);
+    transform: rotate(-12deg);
+}
+
+.swipe-card__badge--nope {
+    right: 22px;
+    color: #fb7185;
+    border: 3px solid #fb7185;
+    text-shadow: 0 0 14px rgba(251, 113, 133, 0.5);
+    transform: rotate(12deg);
+}
+
 .swipe-card__body {
-    padding: 16px 20px 20px;
+    padding: 18px 22px 22px;
     background: var(--card-primary);
+    display: flex;
+    flex-direction: column;
+    height: 40%;
 }
 
 .swipe-card__name {
@@ -1030,14 +1108,14 @@ img {
     font-size: 2rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     line-height: 1;
 }
 
 .swipe-card__meta {
     color: var(--text-secondary);
     font-size: 0.95rem;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .swipe-card__meta i {
@@ -1048,8 +1126,11 @@ img {
 .swipe-card__bio {
     color: var(--text-accent);
     font-size: 0.95rem;
-    margin-bottom: 12px;
-    min-height: 40px;
+    margin-bottom: 14px;
+    flex: 1 1 auto;
+    min-height: 38px;
+    line-height: 1.45;
+    overflow: hidden;
 }
 
 .swipe-card__tags {
@@ -1076,26 +1157,79 @@ img {
     box-shadow: 0 0 12px rgba(147, 51, 234, 0.14);
 }
 
+/* Пустое состояние (нет анкет) */
+.swipe-card--empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+    padding: 48px 30px;
+    background: linear-gradient(160deg, #11161f 0%, #0b0f16 100%);
+}
+
+.swipe-card__empty-icon {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    margin-bottom: 4px;
+}
+
+.swipe-card__empty-icon i {
+    font-size: 2.4rem;
+    color: var(--accent-bright);
+}
+
+.swipe-card--empty h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.swipe-card--empty p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.45;
+    max-width: 290px;
+    margin: 0;
+}
+
 .swipe-actions {
     display: flex;
     justify-content: center;
-    gap: 40px;
-    margin-top: 24px;
+    gap: 38px;
+    margin-top: 26px;
 }
 
 /* Кнопки свайпа (минималистичные, круглые) */
 .swipe-btn {
-    width: 64px;
-    height: 64px;
+    width: 66px;
+    height: 66px;
     border-radius: 50%;
     border: none;
-    font-size: 2rem;
+    font-size: 1.7rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.25s;
+    transition: transform 0.2s ease, box-shadow 0.25s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.swipe-btn:hover {
+    transform: translateY(-3px) scale(1.06);
+}
+
+.swipe-btn:active {
+    transform: translateY(0) scale(0.94);
 }
 
 .swipe-btn-like {
@@ -1105,7 +1239,7 @@ img {
 }
 
 .swipe-btn-like:hover {
-    box-shadow: 0 12px 32px rgba(244, 63, 117, 0.7);
+    box-shadow: 0 14px 34px rgba(244, 63, 117, 0.72);
 }
 
 .swipe-btn-dislike {
@@ -1118,6 +1252,52 @@ img {
     background: rgba(255, 255, 255, 0.08);
     color: var(--text-primary);
     border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Адаптив: мобильные 390–430px */
+@media (max-width: 480px) {
+    .swipe-screen {
+        padding: 0 12px;
+        margin: 18px auto;
+    }
+    .swipe-screen .section-title {
+        font-size: 1.8rem;
+    }
+    .swipe-screen__subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 16px;
+    }
+    .swipe-phone {
+        border-radius: 38px;
+        padding: 10px 10px 14px;
+    }
+    .swipe-phone__notch {
+        width: 110px;
+        height: 20px;
+    }
+    #card-stack {
+        height: 500px;
+    }
+    .swipe-card__name {
+        font-size: 1.7rem;
+    }
+    .swipe-card__bio {
+        font-size: 0.9rem;
+    }
+    .swipe-card__badge {
+        font-size: 1.7rem;
+        top: 18px;
+    }
+    .swipe-actions {
+        gap: 28px;
+        margin-top: 20px;
+    }
+    .swipe-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
 }
 
 /* Нижняя навигация dating */

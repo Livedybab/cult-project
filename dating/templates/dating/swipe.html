@@ -8,42 +8,50 @@
     <h2 class="section-title">Культовые знакомства</h2>
     <p class="swipe-screen__subtitle">Свайпайте вправо или влево</p>
 
-    <div id="card-stack">
-        {% if profile %}
-            <div class="swipe-card" data-user-id="{{ profile.user.id }}">
-                <div class="swipe-card__image-wrap">
-                    {% if profile.avatar %}
-                        <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}">
-                    {% else %}
-                        <div class="swipe-card__placeholder">
-                            <i class="fas fa-user"></i>
+    <div class="swipe-phone">
+        <div class="swipe-phone__notch"></div>
+        <div id="card-stack">
+            {% if profile %}
+                <div class="swipe-card" data-user-id="{{ profile.user.id }}">
+                    <div class="swipe-card__badge swipe-card__badge--like">LIKE</div>
+                    <div class="swipe-card__badge swipe-card__badge--nope">NOPE</div>
+                    <div class="swipe-card__image-wrap">
+                        {% if profile.avatar %}
+                            <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}">
+                        {% else %}
+                            <div class="swipe-card__placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        {% endif %}
+                        <div class="swipe-card__overlay"></div>
+                        <div class="swipe-card__compatibility">
+                            <span>{{ compatibility }}% совместимости</span>
                         </div>
-                    {% endif %}
-                    <div class="swipe-card__overlay"></div>
-                    <div class="swipe-card__compatibility">
-                        <span>{{ compatibility }}% совместимости</span>
+                    </div>
+                    <div class="swipe-card__body">
+                        <h3 class="swipe-card__name">{{ profile.user.username }}, {{ profile.age|default:"?" }}</h3>
+                        <div class="swipe-card__meta">
+                            <i class="fas fa-map-pin"></i> {{ profile.city|default:"Город не указан" }}
+                        </div>
+                        <div class="swipe-card__bio">{{ profile.bio|truncatechars:100 }}</div>
+                        <div class="swipe-card__tags">
+                            {% for interest in profile.interests.all|slice:":4" %}
+                                <span class="interest-tag-premium">{{ interest }}</span>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-                <div class="swipe-card__body">
-                    <h3 class="swipe-card__name">{{ profile.user.username }}, {{ profile.age|default:"?" }}</h3>
-                    <div class="swipe-card__meta">
-                        <i class="fas fa-map-pin"></i> {{ profile.city|default:"Город не указан" }}
-                    </div>
-                    <div class="swipe-card__bio">{{ profile.bio|truncatechars:100 }}</div>
-                    <div class="swipe-card__tags">
-                        {% for interest in profile.interests.all|slice:":4" %}
-                            <span class="interest-tag-premium">{{ interest }}</span>
-                        {% endfor %}
-                    </div>
+            {% else %}
+                <div class="swipe-card swipe-card--empty">
+                    <div class="swipe-card__empty-icon"><i class="fas fa-compass"></i></div>
+                    <h3>Анкеты закончились</h3>
+                    <p>Вы посмотрели всех подходящих людей. Загляните позже — мы найдём для вас ещё!</p>
                 </div>
-            </div>
-        {% else %}
-            <div class="swipe-card" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:60px 20px;background:#0D1824;">
-                <p style="color:#A6ADBA;">Нет новых анкет. Загляните позже!</p>
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
     </div>
 
+    {% if profile %}
     <div class="swipe-actions">
         <button id="dislike-btn" class="swipe-btn swipe-btn-dislike">
             <i class="fas fa-times"></i>
@@ -52,6 +60,7 @@
             <i class="fas fa-heart"></i>
         </button>
     </div>
+    {% endif %}
 </div>
 
 <script>
@@ -59,10 +68,34 @@
         const card = document.querySelector('.swipe-card');
         const likeBtn = document.getElementById('like-btn');
         const dislikeBtn = document.getElementById('dislike-btn');
+        const likeBadge = card ? card.querySelector('.swipe-card__badge--like') : null;
+        const nopeBadge = card ? card.querySelector('.swipe-card__badge--nope') : null;
 
         if (!card || !likeBtn || !dislikeBtn) {
             console.error('Не найдены элементы: card, likeBtn или dislikeBtn');
             return;
+        }
+
+        function updateBadges(dx) {
+            if (!likeBadge || !nopeBadge) return;
+            const p = Math.min(Math.abs(dx) / 100, 1);
+            if (dx > 0) {
+                likeBadge.style.opacity = p;
+                nopeBadge.style.opacity = 0;
+                likeBadge.style.transform = `rotate(-12deg) scale(${0.8 + p * 0.3})`;
+            } else if (dx < 0) {
+                nopeBadge.style.opacity = p;
+                likeBadge.style.opacity = 0;
+                nopeBadge.style.transform = `rotate(12deg) scale(${0.8 + p * 0.3})`;
+            } else {
+                likeBadge.style.opacity = 0;
+                nopeBadge.style.opacity = 0;
+            }
+        }
+
+        function resetBadges() {
+            if (likeBadge) likeBadge.style.opacity = 0;
+            if (nopeBadge) nopeBadge.style.opacity = 0;
         }
 
         function handleSwipe(action) {
@@ -71,6 +104,7 @@
                 console.error('Нет userId на карточке');
                 return;
             }
+            resetBadges();
 
             const formData = new FormData();
             formData.append('user_id', userId);
@@ -126,6 +160,7 @@
         card.addEventListener('mousedown', (e) => {
             startX = e.clientX;
             isDragging = true;
+            card.classList.add('is-dragging');
             card.style.transition = 'none';
         });
 
@@ -133,11 +168,13 @@
             if (!isDragging) return;
             const dx = e.clientX - startX;
             card.style.transform = `translateX(${dx}px) rotate(${dx * 0.08}deg)`;
+            updateBadges(dx);
         });
 
         document.addEventListener('mouseup', (e) => {
             if (!isDragging) return;
             isDragging = false;
+            card.classList.remove('is-dragging');
             const dx = e.clientX - startX;
             if (dx > 100) {
                 handleSwipe('like');
@@ -146,6 +183,7 @@
             } else {
                 card.style.transition = 'transform 0.3s ease';
                 card.style.transform = 'translate(0, 0) rotate(0deg)';
+                resetBadges();
             }
         });
 
@@ -155,6 +193,7 @@
             const touch = e.touches[0];
             touchStartX = touch.clientX;
             isDragging = true;
+            card.classList.add('is-dragging');
             card.style.transition = 'none';
         });
 
@@ -163,11 +202,13 @@
             const touch = e.touches[0];
             const dx = touch.clientX - touchStartX;
             card.style.transform = `translateX(${dx}px) rotate(${dx * 0.08}deg)`;
+            updateBadges(dx);
         });
 
         document.addEventListener('touchend', () => {
             if (!isDragging) return;
             isDragging = false;
+            card.classList.remove('is-dragging');
             const dx = card.style.transform.match(/translateX\(([^)]+)\)/);
             if (dx) {
                 const x = parseFloat(dx[1]);
@@ -178,10 +219,12 @@
                 } else {
                     card.style.transition = 'transform 0.3s ease';
                     card.style.transform = 'translate(0, 0) rotate(0deg)';
+                    resetBadges();
                 }
             } else {
                 card.style.transition = 'transform 0.3s ease';
                 card.style.transform = 'translate(0, 0) rotate(0deg)';
+                resetBadges();
             }
         });
     });
