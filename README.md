@@ -6,7 +6,7 @@
 
 ## Быстрый старт
 
-1. Клонируйте репозиторий: `git clone https://github.com/ваш_логин/cult-project.git` и перейдите в папку `cd cult-project`.
+1. Клонируйте репозиторий: `git clone https://github.com/Livedybab/cult-project.git` и перейдите в папку `cd cult-project`.
 2. Создайте и активируйте виртуальное окружение: `python -m venv venv`, затем `venv\Scripts\activate` (Windows) или `source venv/bin/activate` (Linux/Mac).
 3. Установите зависимости: `pip install -r requirements.txt`.
 4. Выполните миграции: `python manage.py makemigrations dating` и `python manage.py migrate`.
